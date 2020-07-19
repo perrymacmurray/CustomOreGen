@@ -1,4 +1,4 @@
-package com.protania.orechanger.worldgen;
+package com.protania.orechanger.config.data;
 
 import net.minecraft.util.ResourceLocation;
 

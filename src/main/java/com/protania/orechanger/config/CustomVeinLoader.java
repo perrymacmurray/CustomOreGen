@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.protania.orechanger.OreChanger;
-import com.protania.orechanger.worldgen.CustomVeinInfo;
+import com.protania.orechanger.config.data.CustomVeinInfo;
 
 import java.io.*;
 import java.util.ArrayList;

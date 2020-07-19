@@ -1,6 +1,4 @@
-package com.protania.orechanger.worldgen;
-
-import net.minecraft.util.ResourceLocation;
+package com.protania.orechanger.config.data;
 
 public class CustomVeinInfo {
     private BlockInformation[] blocks;

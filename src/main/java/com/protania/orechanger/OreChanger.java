@@ -2,8 +2,8 @@ package com.protania.orechanger;
 
 import com.protania.orechanger.config.Config;
 import com.protania.orechanger.config.CustomVeinLoader;
-import com.protania.orechanger.worldgen.BlockInformation;
-import com.protania.orechanger.worldgen.CustomVeinInfo;
+import com.protania.orechanger.config.data.BlockInformation;
+import com.protania.orechanger.config.data.CustomVeinInfo;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
