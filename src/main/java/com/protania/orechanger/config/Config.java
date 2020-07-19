@@ -7,7 +7,7 @@ import org.apache.commons.lang3.tuple.Pair;
 public class Config {
 
     public static class Common {
-        ForgeConfigSpec.BooleanValue allowOresNotOverwritten;
+        public ForgeConfigSpec.BooleanValue allowOresNotOverwritten;
 
         public Common(Builder builder) {
             builder.push("worldgen");
