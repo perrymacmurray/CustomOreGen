@@ -8,6 +8,7 @@ public class CustomVeinInfo {
     private int yLevelMax;
     private int yLevelMin;
     private int size;
+    private int radius;
     private int numPerChunk;
 
     public BlockInformation[] getBlockInformation() {
@@ -32,6 +33,10 @@ public class CustomVeinInfo {
 
     public int getSize() {
         return size;
+    }
+
+    public int getRadius() {
+        return radius;
     }
 
     public int getNumPerChunk() {
