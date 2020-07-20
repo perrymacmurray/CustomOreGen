@@ -31,7 +31,9 @@ public class CustomVeinLoader {
                     continue;
 
                 Reader file = new FileReader(f);
-                veins.add(gson.fromJson(file, CustomVeinInfo.class));
+                CustomVeinInfo cvi = gson.fromJson(file, CustomVeinInfo.class);
+                if (cvi.ensureValidity())
+                    veins.add(cvi);
                 file.close();
             } catch (JsonSyntaxException ex) {
                 OreChanger.LOGGER.warn("Could not read vein from file " + f.getName() + " - might not be valid.");

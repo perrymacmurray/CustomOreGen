@@ -11,6 +11,23 @@ public class CustomVeinInfo {
     private int radius;
     private int numPerChunk;
 
+    public boolean ensureValidity() {
+        if (yLevelMax > 255) //Ensure height does not exceed 255
+            yLevelMax = 255;
+        if (yLevelMin <= 0) //Ensure height does not... inceed... 1
+            yLevelMin = 1;
+
+        //Ensure vein exists
+        if (size <= 0)
+            return false;
+        if (radius <= 0)
+            return false;
+        if (numPerChunk <= 0)
+            return false;
+
+        return true;
+    }
+
     public BlockInformation[] getBlockInformation() {
         return blocks;
     }
