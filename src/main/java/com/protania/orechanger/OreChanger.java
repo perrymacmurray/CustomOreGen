@@ -4,11 +4,14 @@ import com.protania.orechanger.config.Config;
 import com.protania.orechanger.config.CustomVeinLoader;
 import com.protania.orechanger.config.data.BlockInformation;
 import com.protania.orechanger.config.data.CustomVeinInfo;
+import com.protania.orechanger.worldgen.CustomVeinFeatureConfig;
+import com.protania.orechanger.worldgen.ModFeatures;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.DecoratedFeatureConfig;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -33,6 +36,7 @@ public class OreChanger
         //Event registry
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
+        ModFeatures.FEATURES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     public void commonSetup (FMLCommonSetupEvent event) {
@@ -40,32 +44,43 @@ public class OreChanger
 
         //Remove vanilla ores where applicable
         for (Biome biome : ForgeRegistries.BIOMES) {
-            LOGGER.debug("In biome" + biome.getTranslationKey());
-            //TODO only touch ores in specified dimensions
-            //if (BiomeDictionary.getValues(biome).contains(Type.OVERWORLD) { ... } or something idk
-            List<ConfiguredFeature<?, ?>> features = biome.getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES);
-            for (int i = 0; i < features.size(); i++) {
-                if (Config.COMMON.allowOresNotOverwritten.get()) { //Only remove if custom vein has alternative
-                    outermost:
-                    for (CustomVeinInfo cvi : CustomVeinLoader.veins) {
-                        for (BlockInformation blockInfo : cvi.getBlockInformation()) {
-                            Object o = ((DecoratedFeatureConfig)features.get(i).config).feature.config;
-                            if (o instanceof OreFeatureConfig) {
-                                if ((((OreFeatureConfig)(o)).state.getBlock().matchesBlock(ForgeRegistries.BLOCKS.getValue(blockInfo.getBlock())))) {
-                                    LOGGER.info("Removing vanilla ore generation for " + blockInfo.getBlock() + " in biome " + biome.getTranslationKey());
-                                    features.remove(i);
-                                    break outermost;
+            if (!Config.COMMON.allowOresNotOverwritten.get())
+                biome.getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).clear();
+
+            for (CustomVeinInfo cvi : CustomVeinLoader.veins) {
+                boolean hasMatch = false;
+
+                for (BiomeDictionary.Type t : cvi.getBiomeTypeInformation()) {
+                    if (BiomeDictionary.getTypes(biome).contains(t)) {
+                        hasMatch = true;
+                        break;
+                    }
+                }
+
+                if (hasMatch) {
+                    LOGGER.debug("Modifying biome " + biome.getTranslationKey());
+
+                    if (Config.COMMON.allowOresNotOverwritten.get()) { //Skip this step if configured to remove all veins, which if so was done previously
+                        List<ConfiguredFeature<?, ?>> features = biome.getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES);
+                        for (int i = 0; i < features.size(); i++) {
+                            for (BlockInformation blockInfo : cvi.getBlockInformation()) {
+                                Object o = ((DecoratedFeatureConfig) features.get(i).config).feature.config;
+                                if (o instanceof OreFeatureConfig) {
+                                    if ((((OreFeatureConfig) (o)).state.getBlock().matchesBlock(ForgeRegistries.BLOCKS.getValue(blockInfo.getBlock())))) {
+                                        LOGGER.info("Removing vanilla ore generation for " + blockInfo.getBlock() + " in biome " + biome.getTranslationKey());
+                                        features.remove(i);
+                                        break;
+                                    }
                                 }
                             }
+
                         }
                     }
-                } else { //Remove regardless lol
-                    features.remove(i);
+
+                    //Add new feature, passing CVI
+                    biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, ModFeatures.VEIN.get().withConfiguration(new CustomVeinFeatureConfig(cvi)));
                 }
             }
         }
-
-        //Add custom ore features
-        //TODO add custom ore features
     }
 }
