@@ -3,13 +3,12 @@ package com.protania.orechanger.config.data;
 import net.minecraft.util.ResourceLocation;
 
 public class BlockInformation {
-    private String namespace;
     private String block;
     private int minAmount;
     private int maxAmount;
 
     public ResourceLocation getBlock() {
-        return new ResourceLocation(namespace, block);
+        return new ResourceLocation(block);
     }
 
     public int getMinAmount() {

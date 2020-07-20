@@ -1,8 +1,10 @@
 package com.protania.orechanger.config.data;
 
+import net.minecraft.util.ResourceLocation;
+
 public class CustomVeinInfo {
     private BlockInformation[] blocks;
-    private DimensionInformation[] dimensions;
+    private String[] dimensions;
     private int yLevelMax;
     private int yLevelMin;
     private int size;
@@ -11,8 +13,12 @@ public class CustomVeinInfo {
         return blocks;
     }
 
-    public DimensionInformation[] getDimensionInformation() {
-        return dimensions;
+    public ResourceLocation[] getDimensionInformation() {
+        ResourceLocation[] resources = new ResourceLocation[dimensions.length];
+        for(int i = 0; i < dimensions.length; i++) {
+            resources[i] = new ResourceLocation(dimensions[i]);
+        }
+        return resources;
     }
 
     public int getYLevelMax() {
