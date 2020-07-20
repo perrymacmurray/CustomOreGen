@@ -1,10 +1,10 @@
 package com.protania.orechanger.config.data;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.BiomeDictionary;
 
 public class CustomVeinInfo {
     private BlockInformation[] blocks;
-    private String[] dimensions;
+    private String[] biomeTypes;
     private int yLevelMax;
     private int yLevelMin;
     private int size;
@@ -14,12 +14,12 @@ public class CustomVeinInfo {
         return blocks;
     }
 
-    public ResourceLocation[] getDimensionInformation() {
-        ResourceLocation[] resources = new ResourceLocation[dimensions.length];
-        for(int i = 0; i < dimensions.length; i++) {
-            resources[i] = new ResourceLocation(dimensions[i]);
+    public BiomeDictionary.Type[] getBiomeTypeInformation() {
+        BiomeDictionary.Type[] types = new BiomeDictionary.Type[biomeTypes.length];
+        for(int i = 0; i < biomeTypes.length; i++) {
+            types[i] = BiomeDictionary.Type.getType(biomeTypes[i].toUpperCase());
         }
-        return resources;
+        return types;
     }
 
     public int getYLevelMax() {
