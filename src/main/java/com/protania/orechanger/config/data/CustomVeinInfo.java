@@ -9,7 +9,8 @@ public class CustomVeinInfo {
     private int yLevelMin;
     private int size;
     private int radius;
-    private int numPerChunk;
+    private double numPerChunk;
+    private boolean targetStone;
 
     public boolean ensureValidity() {
         if (yLevelMax > 255) //Ensure height does not exceed 255
@@ -56,7 +57,11 @@ public class CustomVeinInfo {
         return radius;
     }
 
-    public int getNumPerChunk() {
+    public double getNumPerChunk() {
         return numPerChunk;
+    }
+
+    public boolean requireStone() {
+        return targetStone;
     }
 }

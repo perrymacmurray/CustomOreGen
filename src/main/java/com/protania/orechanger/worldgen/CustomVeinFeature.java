@@ -1,11 +1,10 @@
 package com.protania.orechanger.worldgen;
 
-import com.protania.orechanger.OreChanger;
 import com.protania.orechanger.config.data.BlockInformation;
 import com.protania.orechanger.config.data.CustomVeinInfo;
 import com.protania.orechanger.util.RandomCollection;
 import net.minecraft.block.BlockState;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -47,11 +46,17 @@ public class CustomVeinFeature extends Feature<CustomVeinFeatureConfig> {
         return result;
     }
 
+    public boolean isStone(BlockState state) {
+        return state.isIn(Blocks.STONE) || state.isIn(Blocks.GRANITE) || state.isIn(Blocks.DIORITE) || state.isIn(Blocks.ANDESITE);
+    }
+
     @Override
     public boolean func_230362_a_(ISeedReader worldIn, StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, BlockPos chunkBlockPos, CustomVeinFeatureConfig featureConfig) {
         CustomVeinInfo cvi = featureConfig.info;
 
-        for (int veinNum = 0; veinNum < cvi.getNumPerChunk(); veinNum++) {
+        int numPerChunk = (int) ((rand.nextDouble() < (cvi.getNumPerChunk() - Math.floor(cvi.getNumPerChunk()))) ? Math.ceil(cvi.getNumPerChunk()) : Math.floor(cvi.getNumPerChunk()));
+
+        for (int veinNum = 0; veinNum < numPerChunk; veinNum++) {
             RandomCollection<BlockPos> blocks = new RandomCollection<>(rand);
 
             BlockPos veinOrigin = new BlockPos(chunkBlockPos).add(rand.nextInt(16), rand.nextInt((cvi.getYLevelMax() - cvi.getSize()) - (cvi.getYLevelMin() + cvi.getSize())) + (cvi.getYLevelMin() + cvi.getSize()), rand.nextInt(16));
@@ -86,8 +91,7 @@ public class CustomVeinFeature extends Feature<CustomVeinFeatureConfig> {
                 for (int i = (rand.nextInt(blockInfo.getMaxAmount() - blockInfo.getMinAmount()) + blockInfo.getMinAmount()); i > 0; i--) {
                     BlockPos selection = blocks.getRandomAndRemove();
                     BlockState currentState = worldIn.getBlockState(selection);
-                    //TODO implement target blocks (make default stone)
-                    if (currentState.isSolid()) { //Not air or fluid
+                    if (cvi.requireStone() ? isStone(currentState) : currentState.isSolid()) { //Not air or fluid, and is stone if required
                         worldIn.setBlockState(selection, ForgeRegistries.BLOCKS.getValue(blockInfo.getBlock()).getDefaultState(), 3);
                     }
                 }
