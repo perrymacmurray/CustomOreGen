@@ -63,6 +63,9 @@ public class OreChanger
                     if (Config.COMMON.allowOresNotOverwritten.get()) { //Skip this step if configured to remove all veins, which if so was done previously
                         List<ConfiguredFeature<?, ?>> features = biome.getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES);
                         for (int i = 0; i < features.size(); i++) {
+                            if (features.get(i).config instanceof CustomVeinFeatureConfig)
+                                continue;
+
                             for (BlockInformation blockInfo : cvi.getBlockInformation()) {
                                 Object o = ((DecoratedFeatureConfig) features.get(i).config).feature.config;
                                 if (o instanceof OreFeatureConfig) {
