@@ -16,7 +16,7 @@ modId="orechanger" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 version="${file.jarVersion}" #mandatory
  # A display name for the mod
-displayName="Perry's Very Cool Ores" #mandatory
+displayName="CustomOreGen" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
 #updateJSONURL="http://myurl.me/" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
@@ -26,8 +26,8 @@ displayURL="http://orechanger.protania.com/" #optional
 # A text field displayed in the mod UI
 #credits="Thanks for this example mod goes to Java" #optional
 # A text field displayed in the mod UI
-#authors="Love, Cheese and small house plants" #optional
+authors="Perry MacMurray" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Fucks with vanilla ore generation
+Allows for user customization of vanilla ore generation
 '''
