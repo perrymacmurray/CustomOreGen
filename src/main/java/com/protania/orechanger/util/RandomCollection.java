@@ -89,10 +89,16 @@ public class RandomCollection<T> {
     }
 
     public T getRandom() {
+        if (list.size() == 0)
+            return null;
+
         return (T) getRandomWeightTuple().get();
     }
 
     public T getRandomAndRemove() {
+        if (list.size() == 0)
+            return null;
+
         WeightTuple selection = getRandomWeightTuple();
         if (list.remove(selection))
             total -= selection.getWeight();

@@ -87,13 +87,17 @@ public class CustomVeinFeature extends Feature<CustomVeinFeatureConfig> {
                 blocks.addAll(cvi.getRadius() - pass, discoveredBlocks);
             }
 
+            blockPlacement:
             for (BlockInformation blockInfo : cvi.getBlockInformation()) {
-                for (int i = (rand.nextInt(blockInfo.getMaxAmount() - blockInfo.getMinAmount()) + blockInfo.getMinAmount()); i > 0; i--) {
+                for (int i = (rand.nextInt(blockInfo.getMaxAmount() - blockInfo.getMinAmount() + 1) + blockInfo.getMinAmount()); i > 0; i--) {
                     BlockPos selection = blocks.getRandomAndRemove();
+                    if (selection == null)
+                        break blockPlacement;
                     BlockState currentState = worldIn.getBlockState(selection);
                     if (cvi.requireStone() ? isStone(currentState) : currentState.isSolid()) { //Not air or fluid, and is stone if required
                         worldIn.setBlockState(selection, ForgeRegistries.BLOCKS.getValue(blockInfo.getBlock()).getDefaultState(), 3);
-                    }
+                    } else
+                        i++; //Try again if placing block doesn't work
                 }
             }
         }
