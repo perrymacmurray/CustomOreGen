@@ -2,7 +2,7 @@
 This is a Minecraft mod that allows for granular, user-configurable overwriting of vanilla ore generation, and that allows for adding entirely new veins of ore into the game.
 It can be used for changing the frequency of an existing type of ore, adding a new vein into the game (with multiple different types of ore, if you so desire), and even disabling all ore generation.
 
-##Configuration
+## Configuration
 
 This mod uses user-configurable json files to allow for adding new veins of ore into the game. An example of one of these files is as follows:
 ```json
